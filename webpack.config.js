@@ -5,7 +5,7 @@ module.exports = {
   mode: process.env.NODE_ENV ? "productions" : "development",
   context: __dirname,
   entry: {
-    index: path.join(__dirname, 'src', 'app.ts'),
+    background: path.join(__dirname, 'src', 'app.ts'),
   },
   output: {
     path: `${__dirname}/dist`,
