@@ -2,8 +2,9 @@
   "name": "Youtube Gesture Control",
   "version": "0.1.0",
   "manifest_version": 3,
+  "action": {},
   "background": {
     "service_worker": "background.js"
   },
-  "action": {}
+  "permissions": ["tabs"]
 }
