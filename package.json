@@ -1,0 +1,35 @@
+{
+  "name": "youtube-gesture-control",
+  "version": "0.1.0",
+  "main": "index.js",
+  "repository": "https://github.com/katoshin-lab/youtube-gesture-control.git",
+  "author": "katoshin-lab",
+  "license": "MIT",
+  "scripts": {
+    "build": "NODENV=production webpack",
+    "lint:eslint": "eslint . --ext ts,tsx",
+    "fix:eslint": "eslint . --ext ts,tsx --fix"
+  },
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "typescript": "^4.6.2"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.179",
+    "@types/react": "^17.0.39",
+    "@types/react-dom": "^17.0.13",
+    "@typescript-eslint/eslint-plugin": "^5.14.0",
+    "@typescript-eslint/parser": "^5.14.0",
+    "copy-webpack-plugin": "^10.2.4",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-react": "^7.28.0",
+    "ts-loader": "^9.2.7",
+    "webpack": "^5.70.0",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.7.4"
+  }
+}
