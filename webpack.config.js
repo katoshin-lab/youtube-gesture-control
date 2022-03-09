@@ -1,14 +1,12 @@
 const path = require('path')
-const CopyWebpackPlugin = require("copy-webpack-plugin")
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-module.exports = {
-  mode: process.env.NODE_ENV ? "productions" : "development",
+const common = {
+  mode: process.env.NODE_ENV ? "production" : "development",
   context: __dirname,
-  entry: {
-    background: path.join(__dirname, 'src', 'app.ts'),
-  },
   output: {
     path: `${__dirname}/dist`,
+    publicPath: './',
     filename: "[name].js"
   },
   module: {
@@ -23,10 +21,38 @@ module.exports = {
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".json"]
   },
-  devtool: 'inline-source-map',
   plugins: [
     new CopyWebpackPlugin({
       patterns: [{ from: ".", to: ".", context: "public" }]
     })
   ],
+  watch: process.env.NODE_ENV === 'development',
+  devtool: process.env.NODE_ENV === 'development' ? 'inline-source-map' : undefined
 }
+
+const main = {
+  ...common,
+  target: 'electron-main',
+  entry: {
+    main: './src/main/main.ts',
+  },
+};
+
+const preload = {
+  ...common,
+  target: 'electron-preload',
+  entry: {
+    preload: './src/main/preload.ts',
+  },
+};
+
+const renderer = {
+  ...common,
+  target: 'web',
+  entry: {
+    app: './src/app.tsx',
+  },
+}
+
+const config = process.env.NODE_ENV === 'development' ? [renderer] : [main, preload, renderer];
+module.exports = config;

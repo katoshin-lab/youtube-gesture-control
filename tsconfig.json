@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6",
     "module": "ESNext",
     "jsx": "react",
     "lib": [
@@ -9,7 +9,10 @@
       "ESNext"
     ],
     "baseUrl": "./src",
-    "outDir": "./lib-ts",
+    "outDir": "dist",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
     "declaration": true,
     "sourceMap": true,
     "allowJs": false,
@@ -22,7 +25,9 @@
     "noFallthroughCasesInSwitch": false,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "preserveConstEnums": true
+    "preserveConstEnums": true,
+    "esModuleInterop": true,
+    "noImplicitAny": false
   },
   "compileOnSave": true,
   "include": [
@@ -32,10 +37,5 @@
     ".git",
     "node_modules",
     "lib"
-  ],
-  "typedocOptions": {
-    "name": "test_npm",
-    "mode": "file",
-    "out": "./docs"
-  }
+  ]
 }

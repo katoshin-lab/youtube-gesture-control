@@ -1,19 +1,25 @@
 {
   "name": "youtube-gesture-control",
   "version": "0.1.0",
-  "main": "index.js",
+  "main": "dist/main.js",
   "repository": "https://github.com/katoshin-lab/youtube-gesture-control.git",
   "author": "katoshin-lab",
   "license": "MIT",
   "scripts": {
-    "build": "NODENV=production webpack",
+    "predev": "rimraf dist",
+    "dev": "run-p dev:*",
+    "dev:tsc": "tsc -w -p tsconfig.main.json",
+    "dev:webpack": "cross-env NODE_ENV=\"development\" webpack",
+    "dev:electron": "wait-on ./dist/index.html && cross-env NODE_ENV=\"development\" electron .",
+    "build": "cross-env NODE_ENV=\"production\" webpack --progress",
     "lint:eslint": "eslint . --ext ts,tsx",
     "fix:eslint": "eslint . --ext ts,tsx --fix"
   },
   "dependencies": {
+    "node-key-sender": "^1.0.11",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "typescript": "^4.6.2"
+    "typescript": "^4.5.5"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.179",
@@ -22,14 +28,20 @@
     "@typescript-eslint/eslint-plugin": "^5.14.0",
     "@typescript-eslint/parser": "^5.14.0",
     "copy-webpack-plugin": "^10.2.4",
+    "cross-env": "^7.0.3",
+    "electron": "^17.1.1",
+    "electron-reload": "^2.0.0-alpha.1",
     "eslint": "^7.32.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^3.0.2",
     "ts-loader": "^9.2.7",
-    "webpack": "^5.70.0",
-    "webpack-cli": "^4.9.2",
-    "webpack-dev-server": "^4.7.4"
+    "wait-on": "^6.0.1",
+    "webpack": "^5.68.0",
+    "webpack-cli": "^4.9.2"
   }
 }
