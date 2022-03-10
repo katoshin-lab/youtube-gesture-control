@@ -1,5 +1,6 @@
 export default class PageWatcher {
   public static started: boolean = false;
+  protected static readonly targetUrl = 'https://shunsugu.jp/live';
 
   private _enabled: boolean = false;
 
@@ -28,12 +29,22 @@ export default class PageWatcher {
     return this._enabled;
   }
 
-  protected callback(historyItem: chrome.history.HistoryItem): void {
-    console.log(historyItem);
+  protected callback(historyItem: chrome.history.HistoryItem, captureTabs?: (tabs: chrome.tabs.Tab[]) => void): void {
+    if (captureTabs && historyItem.url?.startsWith(PageWatcher.targetUrl)) {
+      console.log(historyItem);
+      chrome.tabs.query(
+        { url: PageWatcher.targetUrl },
+        (tabs) => captureTabs(tabs)
+      )
+    }
+  }
+
+  protected captureTabs(tabs: chrome.tabs.Tab[]) {
+    console.log(tabs);
   }
 
   protected addWatchListener() {
-    chrome.history.onVisited.addListener(this.callback);
+    chrome.history.onVisited.addListener((historyItem) => this.callback(historyItem, this.captureTabs));
     PageWatcher.started = true;
   }
 
