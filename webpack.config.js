@@ -37,11 +37,18 @@ const main = {
   },
 };
 
-const view = {
+const settings = {
   ...common,
   entry: {
-    view: path.join(__dirname, 'src', 'views', 'index.tsx')
+    settings: path.join(__dirname, 'src', 'views', 'settings.tsx')
   }
 }
 
-module.exports = [main, view];
+const popup = {
+  ...common,
+  entry: {
+    popup: path.join(__dirname, 'src', 'views', 'popup.tsx')
+  }
+}
+
+module.exports = [main, settings, popup];

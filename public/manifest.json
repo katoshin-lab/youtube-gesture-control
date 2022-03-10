@@ -2,7 +2,10 @@
   "name": "Youtube Gesture Control",
   "version": "0.1.0",
   "manifest_version": 3,
-  "action": {},
+  "action": {
+    "default_title": "Youtube Gesture Control",
+    "default_popup": "popup.html"
+  },
   "background": {
     "service_worker": "background.js"
   },
