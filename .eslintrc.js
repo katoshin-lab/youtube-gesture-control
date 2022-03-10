@@ -21,5 +21,11 @@ module.exports = {
         "@typescript-eslint"
     ],
     "rules": {
+        "no-underscore-dangle": 0,
+        "class-methods-use-this": 0,
+        "import/no-unresolved": 0,
+        "import/extensions": 0,
+        "react/function-component-definition": 0,
+        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".tsx"] }]
     }
 }
