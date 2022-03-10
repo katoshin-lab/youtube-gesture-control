@@ -6,7 +6,10 @@
   "author": "katoshin-lab",
   "license": "MIT",
   "scripts": {
-    "build": "NODENV=production webpack",
+    "dev-build": "run-p dev:*",
+    "dev:pre": "rimraf dist",
+    "dev:webpack": "cross-env NODENV=\"development\" webpack --progress --watch",
+    "build": "cross-env NODENV=\"production\" webpack --progress",
     "lint:eslint": "eslint . --ext ts,tsx",
     "fix:eslint": "eslint . --ext ts,tsx --fix"
   },
@@ -22,12 +25,16 @@
     "@typescript-eslint/eslint-plugin": "^5.14.0",
     "@typescript-eslint/parser": "^5.14.0",
     "copy-webpack-plugin": "^10.2.4",
+    "cross-env": "^7.0.3",
     "eslint": "^7.32.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-react": "^7.28.0",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^3.0.2",
     "ts-loader": "^9.2.7",
+    "wait-on": "^6.0.1",
     "webpack": "^5.70.0",
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.7.4"
