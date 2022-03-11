@@ -1,8 +1,9 @@
 import PageWatcher from './main/pageWatcher';
 
-export class Base {
-
+export default class Base {
+  // eslint-disable-next-line no-use-before-define
   public static instance: Base;
+
   public watcher: PageWatcher;
 
   public static init() {
@@ -16,9 +17,8 @@ export class Base {
   constructor() {
     this.watcher = new PageWatcher(true);
     this.watcher.start();
-    console.log('started')
+    console.log('started');
   }
-
 }
 
 Base.init();

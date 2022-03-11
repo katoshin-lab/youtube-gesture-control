@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 // import PageWatcher from '../main/pageWatcher';
-import { Base } from '../app';
+import Base from '../app';
 
 const Settings = () => {
   const { useState, useEffect } = React;
