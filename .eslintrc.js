@@ -26,6 +26,10 @@ module.exports = {
         "import/no-unresolved": 0,
         "import/extensions": 0,
         "react/function-component-definition": 0,
-        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".tsx"] }]
+        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".tsx"] }],
+        "linebreak-style": 0,
+        "jsx-quotes": 0,
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": ["error"]
     }
 }
