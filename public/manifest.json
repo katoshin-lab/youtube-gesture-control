@@ -9,5 +9,14 @@
   "background": {
     "service_worker": "background.js"
   },
-  "permissions": ["tabs", "history", "scripting"]
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "history",
+    "scripting"
+  ],
+  "host_permissions": [
+    "http://www.youtube.com/*",
+    "https://www.youtube.com/*"
+  ]
 }
