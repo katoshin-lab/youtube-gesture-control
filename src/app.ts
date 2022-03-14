@@ -11,6 +11,10 @@ export default class Base {
       console.log('already started');
     } else {
       Base.instance = new Base();
+      chrome.action.onClicked.addListener(async () => {
+        const popup = chrome.runtime.getURL('popup.html');
+        await chrome.browserAction.setPopup({ popup });
+      });
     }
   }
 
@@ -22,8 +26,3 @@ export default class Base {
 }
 
 Base.init();
-
-chrome.action.onClicked.addListener(async () => {
-  const popup = chrome.runtime.getURL('popup.html');
-  await chrome.browserAction.setPopup({ popup });
-});

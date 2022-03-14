@@ -3,9 +3,11 @@ export default class PageWatcher {
 
   protected static readonly targetUrl = 'https://www.youtube.com/watch';
 
+  protected static readonly captureTabKey = 'CAPTURE_TAB_KEY';
+
   private _enabled: boolean = false;
 
-  public currentUrl: string | undefined;
+  public captureTab: chrome.tabs.Tab | undefined;
 
   constructor(enabled: boolean) {
     this._enabled = enabled;
@@ -36,26 +38,35 @@ export default class PageWatcher {
     historyItem: chrome.history.HistoryItem,
   ): void {
     if (historyItem.url?.startsWith(PageWatcher.targetUrl)) {
-      console.log(historyItem);
       chrome.tabs.query(
         {active: true, currentWindow: true},
-        this.captureTabs,
+        this.captureTabs.bind(this),
       );
-      // chrome.tabs.getCurrent((tabs) => captureTabs(tabs))
     }
   }
 
-  protected captureTabs(tabs: chrome.tabs.Tab[]) {
-    console.log(tabs)
-    this.currentUrl = tabs[0]?.url;
+  protected captureTabs(tabs: chrome.tabs.Tab[]): void {
+    const tab = tabs[0];
+    if (tab) {
+      this.captureTab = tab;
+      this.handleTab();
+    } else {
+      console.log('couldn\'t get tab');
+    }
   }
 
-  protected addWatchListener() {
-    chrome.history.onVisited.addListener(this.callback.bind(this));
+  protected handleTab(): void {
+    console.log(this.captureTab);
+    const video = window.document.querySelector('video-stream html5-main-video');
+    console.log(video);
+  }
+
+  protected addWatchListener(): void {
     PageWatcher.started = true;
+    chrome.history.onVisited.addListener(this.callback.bind(this));
   }
 
-  protected removeWatchListener() {
+  protected removeWatchListener(): void {
     chrome.history.onVisited.removeListener(this.callback);
     PageWatcher.started = false;
   }
