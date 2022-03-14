@@ -1,7 +1,8 @@
 export default class PageWatcher {
   public static started: boolean = false;
 
-  protected static readonly targetUrl = 'https://www.youtube.com/watch';
+  // protected static readonly targetUrl = 'https://www.youtube.com/watch';
+  protected static readonly targetUrl = 'https://shunsugu.jp/live';
 
   protected static readonly captureTabKey = 'CAPTURE_TAB_KEY';
 
@@ -34,7 +35,9 @@ export default class PageWatcher {
     return this._enabled;
   }
 
-  protected callback(
+  // callbacks
+
+  protected onHistoryChange(
     historyItem: chrome.history.HistoryItem,
   ): void {
     if (historyItem.url?.startsWith(PageWatcher.targetUrl)) {
@@ -51,7 +54,7 @@ export default class PageWatcher {
       this.captureTab = tab;
       this.handleTab();
     } else {
-      console.log('couldn\'t get tab');
+      console.log('couldn\'t get the tab.');
     }
   }
 
@@ -61,13 +64,15 @@ export default class PageWatcher {
     console.log(video);
   }
 
+  // add listener
+
   protected addWatchListener(): void {
     PageWatcher.started = true;
-    chrome.history.onVisited.addListener(this.callback.bind(this));
+    chrome.history.onVisited.addListener(this.onHistoryChange.bind(this));
   }
 
   protected removeWatchListener(): void {
-    chrome.history.onVisited.removeListener(this.callback);
+    chrome.history.onVisited.removeListener(this.onHistoryChange);
     PageWatcher.started = false;
   }
 }
