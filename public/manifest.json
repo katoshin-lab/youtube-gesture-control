@@ -18,5 +18,13 @@
   "host_permissions": [
     "http://www.youtube.com/*",
     "https://www.youtube.com/*"
-  ]
+  ],
+  "commands": {
+    "pause_video": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+P"
+      },
+      "description": "pause video"
+    }
+  }
 }

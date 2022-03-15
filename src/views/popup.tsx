@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 import { FormControlLabel, Switch, Button } from '@material-ui/core';
 import styled from 'styled-components';
 import Base from '../app';
-import PageWatcher from '../main/pageWatcher';
+// import PageWatcher from '../main/pageWatcher';
 
 const StyledPopupContainer = styled.div`
   padding: 1rem;
@@ -11,23 +11,18 @@ const StyledPopupContainer = styled.div`
 `;
 
 const Popup = () => {
-  const { useState, useEffect, useRef } = React;
+  const { useState, useEffect } = React;
 
-  const pageWatcher = useRef<PageWatcher | undefined>(undefined);
   const [enabled, setEnabled] = useState<boolean>(!!Base.instance);
 
   useEffect(() => {
-    if (!Base.instance) {
-      Base.init();
-    }
-    pageWatcher.current = Base.instance.watcher;
-    setEnabled(pageWatcher.current.enabled);
+    setEnabled(!!Base.instance.watcher?.enabled);
   }, []);
 
   const handleEnabled = () => {
     setEnabled(!enabled);
-    if (pageWatcher.current) {
-      pageWatcher.current.enabled = enabled;
+    if (Base.instance?.watcher) {
+      Base.instance.watcher.enabled = enabled;
     }
   };
 
@@ -37,7 +32,12 @@ const Popup = () => {
   };
 
   const handleClickButton = () => {
-    console.log('click');
+    console.log('アクション', Base.instance.watcher)
+    if (Base.instance?.watcher?.enabled) {
+      Base.instance.watcher.tabPageHandler?.pauseVideo();
+    } else {
+      console.log('not enabled')
+    }
   };
 
   return (

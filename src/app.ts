@@ -1,10 +1,13 @@
 import PageWatcher from './main/pageWatcher';
+import TabPageHander from 'main/tabPageHandler';
 
 export default class Base {
   // eslint-disable-next-line no-use-before-define
   public static instance: Base;
 
   public watcher: PageWatcher;
+
+  public tabPageHandler!: TabPageHander;
 
   public static init() {
     if (Base.instance) {
