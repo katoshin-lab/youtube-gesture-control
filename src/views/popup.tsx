@@ -32,11 +32,10 @@ const Popup = () => {
   };
 
   const handleClickButton = () => {
-    console.log('アクション', Base.instance.watcher)
     if (Base.instance?.watcher?.enabled) {
       Base.instance.watcher.tabPageHandler?.pauseVideo();
     } else {
-      console.log('not enabled')
+      console.log('not enabled');
     }
   };
 

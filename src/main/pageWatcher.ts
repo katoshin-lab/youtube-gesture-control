@@ -1,4 +1,4 @@
-import TabPageHander from "./tabPageHandler";
+import TabPageHander from './tabPageHandler';
 
 export default class PageWatcher {
   public static started: boolean = false;
@@ -44,7 +44,7 @@ export default class PageWatcher {
   ): void {
     if (historyItem.url?.startsWith(PageWatcher.targetUrl)) {
       chrome.tabs.query(
-        {active: true, currentWindow: true},
+        { active: true, currentWindow: true },
         this.captureTabs.bind(this),
       );
     }
@@ -54,7 +54,7 @@ export default class PageWatcher {
     const tab = tabs[0];
     if (tab) {
       this.tabPageHandler = new TabPageHander(tab);
-      console.log('captureTab: ', this.tabPageHandler)
+      console.log('captureTab: ', this.tabPageHandler);
     } else {
       console.log('couldn\'t get the tab.');
     }
@@ -77,6 +77,6 @@ export default class PageWatcher {
       if (this.tabPageHandler && command === 'pause_video') {
         this.tabPageHandler.pauseVideo();
       }
-    })
+    });
   }
 }

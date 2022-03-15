@@ -1,5 +1,5 @@
 import PageWatcher from './main/pageWatcher';
-import TabPageHander from 'main/tabPageHandler';
+import TabPageHander from './main/tabPageHandler';
 
 export default class Base {
   // eslint-disable-next-line no-use-before-define
