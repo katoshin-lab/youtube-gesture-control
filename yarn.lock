@@ -333,6 +333,13 @@
   resolved "https://registry.yarnpkg.com/@sideway/pinpoint/-/pinpoint-2.0.0.tgz#cff8ffadc372ad29fd3f78277aeb29e632cc70df"
   integrity sha512-RNiOoTPkptFtSVzQevY/yWtZwf/RxyVnPy/OcA9HBM3MlGDnBEYL5B41H0MTn0Uec8Hi+2qUtTfG2WWZBmMejQ==
 
+"@tensorflow-models/hand-pose-detection@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@tensorflow-models/hand-pose-detection/-/hand-pose-detection-2.0.0.tgz#967b26d17d26454d0625c2af2264fd7aad8fdc35"
+  integrity sha512-wAiu/SpigjKuhlEdIvPp84FyzIH0v8kHn/jB/VslUn/pV75Kpsv8Jk0S55oC/Jj54B/fLDZU19+zYN7lQMBCxg==
+  dependencies:
+    rimraf "^3.0.2"
+
 "@tensorflow/tfjs-backend-cpu@3.14.0":
   version "3.14.0"
   resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-backend-cpu/-/tfjs-backend-cpu-3.14.0.tgz#f4db5cd17609e274709f86a0c34233d35cb886b2"
