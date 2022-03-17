@@ -12,6 +12,7 @@ const StyledPopupContainer = styled.div`
   video {
     width: 160px;
     height: 90px;
+    transform: scale(-1, 1);
   }
 `;
 
