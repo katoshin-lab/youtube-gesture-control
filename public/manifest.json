@@ -13,7 +13,8 @@
     "tabs",
     "activeTab",
     "history",
-    "scripting"
+    "scripting",
+    "storage"
   ],
   "host_permissions": [
     "http://www.youtube.com/*",

@@ -22,9 +22,7 @@ export default class Base {
   }
 
   constructor() {
-    this.watcher = new PageWatcher(true);
-    this.watcher.start();
-    console.log('started');
+    this.watcher = new PageWatcher();
   }
 }
 

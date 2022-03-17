@@ -1,4 +1,5 @@
 import TabPageHander from './tabPageHandler';
+import Storage from '../types/storage';
 
 export default class PageWatcher {
   public static started: boolean = false;
@@ -11,25 +12,30 @@ export default class PageWatcher {
 
   private _enabled: boolean = false;
 
-  constructor(enabled: boolean) {
-    this._enabled = enabled;
+  constructor() {
+    chrome.storage.sync.get(
+      ['pageWatcherEnable'],
+      (result: Partial<Storage>) => {
+        this.enabled = !!result.pageWatcherEnable;
+      },
+    );
+    chrome.storage.onChanged.addListener(this.onStorageChange.bind(this));
   }
 
-  public start(): void {
-    if (PageWatcher.started) {
-      console.log('PageWatcher has already started.');
-    } else if (this._enabled) {
-      this.addWatchListener();
-      this.sampleEvent();
-    }
-  }
-
+  // handle on/off this pageWatcher through this setter.
   set enabled(enabled: boolean) {
     this._enabled = enabled;
     if (enabled && !PageWatcher.started) {
       this.addWatchListener();
-    } else if (!enabled) {
+      this.sampleEvent();
+      console.log('PageWatcher is enabled.');
+    } else if (enabled && PageWatcher.started) {
+      console.log('PageWatcher has already enabled.');
+    } else if (!enabled && PageWatcher.started) {
       this.removeWatchListener();
+      console.log('PageWatcher is disabled.');
+    } else {
+      console.log('PageWatcher has already disabled.')
     }
   }
 
@@ -42,6 +48,7 @@ export default class PageWatcher {
   protected onHistoryChange(
     historyItem: chrome.history.HistoryItem,
   ): void {
+    console.log(historyItem)
     if (historyItem.url?.startsWith(PageWatcher.targetUrl)) {
       chrome.tabs.query(
         { active: true, currentWindow: true },
@@ -81,7 +88,7 @@ export default class PageWatcher {
   }
 
   protected removeWatchListener(): void {
-    chrome.history.onVisited.removeListener(this.onHistoryChange);
+    chrome.history.onVisited.removeListener(this.onHistoryChange.bind(this));
     PageWatcher.started = false;
   }
 
