@@ -6,20 +6,35 @@ import type Storage from '../types/storage';
 
 const StyledPopupContainer = styled.div`
   padding: 1rem;
-  width: 200px;
+  .switch, .video-container {
+    margin: 2rem 0;
+  }
+  video {
+    width: 160px;
+    height: 90px;
+  }
 `;
 
 const Settings = () => {
-  const { useState, useEffect } = React;
+  const { useState, useEffect, useRef } = React;
+
+  const videoElm = useRef<HTMLVideoElement>(null);
 
   const [enabled, setEnabled] = useState<boolean>(false);
+
+  const setVideoStream = async () => {
+    if (navigator.mediaDevices) {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+      videoElm.current!.srcObject = stream;
+    }
+  }
 
   useEffect(() => {
     chrome.storage.sync.get(
       ['pageWatcherEnable'],
       (result: Partial<Storage>) => setEnabled(!!result['pageWatcherEnable']),
     )
-    console.log(window.matchMedia)
+    setVideoStream();
   }, []);
 
   const handleEnabled = () => {
@@ -29,9 +44,9 @@ const Settings = () => {
 
   return (
     <StyledPopupContainer>
-      <h1>Hello!!!</h1>
+      <h1>Welcome to Youtube Gesture Contol 👋</h1>
       <FormControlLabel
-        label={enabled ? '監視中' : '休止中'}
+        label={enabled ? 'ENABLE (Your gesture works when the active tab url is \'www.youtube.com\'.)' : 'DISABLE'}
         control={
           (
             <Switch
@@ -40,7 +55,16 @@ const Settings = () => {
             />
           )
         }
+        className='switch'
       />
+      <div className='video-container'>
+        <video
+          ref={videoElm}
+          autoPlay
+          playsInline
+          muted
+        />
+      </div>
     </StyledPopupContainer>
   );
 };
