@@ -50,6 +50,19 @@ export default class PageWatcher {
     }
   }
 
+  protected onStorageChange(
+    obj: {},
+    areaName: string,
+  ): void {
+    console.log('onStorageChange: ', obj, areaName)
+    chrome.storage.sync.get(
+      ['pageWatcherEnable'],
+      (result: Partial<Storage>) => {
+        this.enabled = !!result.pageWatcherEnable;
+      },
+    );
+  }
+
   protected captureTabs(tabs: chrome.tabs.Tab[]): void {
     const tab = tabs[0];
     if (tab) {

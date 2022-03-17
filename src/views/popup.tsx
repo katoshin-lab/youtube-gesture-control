@@ -2,8 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { FormControlLabel, Switch, Button } from '@material-ui/core';
 import styled from 'styled-components';
-import Base from '../app';
-// import PageWatcher from '../main/pageWatcher';
+import type Storage from '../types/storage';
 
 const StyledPopupContainer = styled.div`
   padding: 1rem;
@@ -13,30 +12,23 @@ const StyledPopupContainer = styled.div`
 const Popup = () => {
   const { useState, useEffect } = React;
 
-  const [enabled, setEnabled] = useState<boolean>(!!Base.instance);
+  const [enabled, setEnabled] = useState<boolean>(false);
 
   useEffect(() => {
-    setEnabled(!!Base.instance.watcher?.enabled);
+    chrome.storage.sync.get(
+      ['pageWatcherEnable'],
+      (result: Partial<Storage>) => setEnabled(!!result['pageWatcherEnable']),
+    )
   }, []);
 
   const handleEnabled = () => {
     setEnabled(!enabled);
-    if (Base.instance?.watcher) {
-      Base.instance.watcher.enabled = enabled;
-    }
+    chrome.storage.sync.set({ pageWatcherEnable: !enabled });
   };
 
   const openSettingTab = () => {
     const url = chrome.runtime.getURL('settings.html');
     chrome.tabs.create({ url });
-  };
-
-  const handleClickButton = () => {
-    if (Base.instance?.watcher?.enabled) {
-      Base.instance.watcher.tabPageHandler?.pauseVideo();
-    } else {
-      console.log('not enabled');
-    }
   };
 
   return (
@@ -53,7 +45,7 @@ const Popup = () => {
           )
         }
       />
-      <Button variant='contained' onClick={handleClickButton}>アクション</Button>
+      {/* <Button variant='contained' onClick={handleClickButton}>アクション</Button> */}
       <Button variant='outlined' onClick={openSettingTab}>詳細設定</Button>
     </StyledPopupContainer>
   );
