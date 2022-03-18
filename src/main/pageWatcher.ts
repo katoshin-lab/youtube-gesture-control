@@ -35,7 +35,7 @@ export default class PageWatcher {
       this.removeWatchListener();
       console.log('PageWatcher is disabled.');
     } else {
-      console.log('PageWatcher has already disabled.')
+      console.log('PageWatcher has already disabled.');
     }
   }
 
@@ -48,7 +48,7 @@ export default class PageWatcher {
   protected onHistoryChange(
     historyItem: chrome.history.HistoryItem,
   ): void {
-    console.log(historyItem)
+    console.log(historyItem);
     if (historyItem.url?.startsWith(PageWatcher.targetUrl)) {
       chrome.tabs.query(
         { active: true, currentWindow: true },
@@ -61,7 +61,7 @@ export default class PageWatcher {
     obj: {},
     areaName: string,
   ): void {
-    console.log('onStorageChange: ', obj, areaName)
+    console.log('onStorageChange: ', obj, areaName);
     chrome.storage.sync.get(
       ['pageWatcherEnable'],
       (result: Partial<Storage>) => {

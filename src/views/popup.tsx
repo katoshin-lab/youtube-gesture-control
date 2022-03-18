@@ -17,8 +17,8 @@ const Popup = () => {
   useEffect(() => {
     chrome.storage.sync.get(
       ['pageWatcherEnable'],
-      (result: Partial<Storage>) => setEnabled(!!result['pageWatcherEnable']),
-    )
+      (result: Partial<Storage>) => setEnabled(!!result.pageWatcherEnable),
+    );
   }, []);
 
   const handleEnabled = () => {

@@ -30,6 +30,8 @@ module.exports = {
         "linebreak-style": 0,
         "jsx-quotes": 0,
         "no-unused-vars": "off",
-        "@typescript-eslint/no-unused-vars": ["error"]
+        "@typescript-eslint/no-unused-vars": ["error"],
+        "jsx-a11y/click-events-have-key-events": 0,
+        "jsx-a11y/no-static-element-interactions": 0
     }
 }

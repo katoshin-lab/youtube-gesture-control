@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { FormControlLabel, Switch, } from '@material-ui/core';
+import { FormControlLabel, Switch } from '@material-ui/core';
 import styled from 'styled-components';
 import type Storage from '../types/storage';
 
@@ -21,7 +21,7 @@ const StyledPopupContainer = styled.div<StyledProps>`
       border-radius: 4px;
       border: 1px solid #cccccc;
       video, canvas {
-        display: ${({ enableCamera }) => enableCamera ? 'block' : 'none'};
+        display: ${({ enableCamera }) => (enableCamera ? 'block' : 'none')};
         width: 100%;
         height: 100%;
         transform: scale(-1, 1);
@@ -53,21 +53,25 @@ const Settings = () => {
   const canvasElm = useRef<HTMLCanvasElement>(null);
 
   const [enabled, setEnabled] = useState<boolean>(false);
-  const [enableCamera, setEnableCamera] = useState<boolean>(false)
+  const [enableCamera, setEnableCamera] = useState<boolean>(false);
 
   const setVideoStream = async () => {
     if (navigator.mediaDevices) {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-      videoElm.current!.srcObject = stream;
-      stream && setEnableCamera(true)
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+        videoElm.current!.srcObject = stream;
+        setEnableCamera(!!stream);
+      } catch {
+        setEnableCamera(false);
+      }
     }
-  }
+  };
 
   useEffect(() => {
     chrome.storage.sync.get(
-      ['pageWatcherEnable'],
-      (result: Partial<Storage>) => setEnabled(!!result['pageWatcherEnable']),
-    )
+      'pageWatcherEnable',
+      (result: Partial<Storage>) => setEnabled(!!result.pageWatcherEnable),
+    );
     setVideoStream();
   }, []);
 

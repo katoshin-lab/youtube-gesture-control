@@ -13,7 +13,7 @@ export default class TabPageHander {
     this.executeScript(
       () => {
         const video = document.querySelector('div.html5-video-container video.html5-main-video') as HTMLVideoElement;
-        console.log(video)
+        console.log(video);
         video?.play();
       },
       (res) => console.log('play', res),
@@ -24,7 +24,7 @@ export default class TabPageHander {
     this.executeScript(
       () => {
         const video = document.querySelector('div.html5-video-container video.html5-main-video') as HTMLVideoElement;
-        console.log(video)
+        console.log(video);
         video?.pause();
       },
       (res) => console.log('pause', res),

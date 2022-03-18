@@ -1,4 +1,6 @@
-export default interface Storage {
+interface Storage {
   pageWatcherEnable: boolean;
   darkmode: boolean;
 }
+
+export default Storage;
