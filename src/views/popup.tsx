@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { FormControlLabel, Switch, Button } from '@material-ui/core';
 import styled from 'styled-components';
+import Base from '../app';
 import type SettingStorage from '../types/settingStorage';
 
 const StyledPopupContainer = styled.div`
@@ -19,14 +20,15 @@ const Popup = () => {
 
   useEffect(() => {
     chrome.storage.sync.get(
-      ['captureGestureEnable'],
-      (result: Partial<SettingStorage>) => setEnabled(!!result.captureGestureEnable),
+      ['openCaptureWindow'],
+      (result: Partial<SettingStorage>) => setEnabled(!!result.openCaptureWindow),
     );
+    console.log('open capture window? : ', Base.openCaptureWindow);
   }, []);
 
   const handleEnabled = () => {
     setEnabled(!enabled);
-    chrome.storage.sync.set({ captureGestureEnable: !enabled });
+    chrome.storage.sync.set({ openCaptureWindow: !enabled });
   };
 
   const openSettingTab = () => {

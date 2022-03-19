@@ -1,5 +1,5 @@
 interface SettingStorage {
-  captureGestureEnable: boolean;
+  openCaptureWindow: boolean;
   startupOpen: boolean;
 }
 

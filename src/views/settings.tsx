@@ -87,15 +87,15 @@ const Settings = () => {
 
   useEffect(() => {
     chrome.storage.sync.get(
-      'captureGestureEnable',
-      (result: Partial<SettingStorage>) => setEnabled(!!result.captureGestureEnable),
+      'openCaptureWindow',
+      (result: Partial<SettingStorage>) => setEnabled(!!result.openCaptureWindow),
     );
     setVideoStream();
   }, []);
 
   // const handleEnabled = () => {
   //   setEnabled(!enabled);
-  //   chrome.storage.sync.set({ captureGestureEnable: !enabled });
+  //   chrome.storage.sync.set({ openCaptureWindow: !enabled });
   // };
 
   return (
