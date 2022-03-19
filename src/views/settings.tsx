@@ -1,19 +1,37 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { FormControlLabel, Switch } from '@material-ui/core';
 import styled from 'styled-components';
-import type Storage from '../types/storage';
+import SettingForm from './components/settingForm';
+import type SettingStorage from '../types/settingStorage';
 
 type StyledProps = { enableCamera: boolean };
 
 const StyledPopupContainer = styled.div<StyledProps>`
   padding: 1rem;
-  .switch, .io-wrapper {
-    margin: 2rem 0;
+  h2 {
+    margin-top: 4rem;
+    padding-left: 1rem;
+    font-weight: bold;
+    border-left: 5px solid #1166ff;
   }
-  .io-wrapper {
+  h3 {
+    margin-top: 2rem;
+    padding-left: .75rem;
+    border-left: 5px solid #55aaff;
+  }
+  .io-wrapper, .setting-wrapper {
+    margin: 2rem 0;
+    margin-left: 2rem;
+    .switch-title {
+      font-weight: bold;
+      font-size: .9rem;
+    }
+    .explanation {
+      margin-top: -.1rem;
+    }
+  }
+  .capture-display {
     display: flex;
-    margin-left: 1.5rem;
     >div {
       margin-left: 1.5rem;
       width: 160px;
@@ -69,45 +87,56 @@ const Settings = () => {
 
   useEffect(() => {
     chrome.storage.sync.get(
-      'pageWatcherEnable',
-      (result: Partial<Storage>) => setEnabled(!!result.pageWatcherEnable),
+      'captureGestureEnable',
+      (result: Partial<SettingStorage>) => setEnabled(!!result.captureGestureEnable),
     );
     setVideoStream();
   }, []);
 
-  const handleEnabled = () => {
-    setEnabled(!enabled);
-    chrome.storage.sync.set({ pageWatcherEnable: !enabled });
-  };
+  // const handleEnabled = () => {
+  //   setEnabled(!enabled);
+  //   chrome.storage.sync.set({ captureGestureEnable: !enabled });
+  // };
 
   return (
     <StyledPopupContainer enableCamera={enableCamera}>
       <h1>Welcome to Youtube Gesture Contol 👋</h1>
-      <FormControlLabel
-        label={enabled ? 'ENABLE (Your gesture works when the active tab url is \'www.youtube.com\'.)' : 'DISABLE'}
-        control={
-          (
-            <Switch
-              checked={enabled}
-              onChange={handleEnabled}
+      {/* <div className="switch-wrapper">
+        <p className='switch-title'>Enable Gestrue Control?</p>
+        <FormControlLabel
+          label={enabled ? 'ENABLE (Camera ON)' : 'DISABLE (Camera OFF)'}
+          control={
+            (
+              <Switch
+                checked={enabled}
+                onChange={handleEnabled}
+              />
+            )
+          }
+        />
+      </div> */}
+      <h2>Capture</h2>
+        <div className="io-wrapper">
+        <p style={{ display: 'block' }}>{enabled ? 'Capturing your hands! You are able to control youtube video with hand gesture!' : ''}</p>
+        <div className="capture-display">
+          <div>
+            <video
+              ref={videoElm}
+              autoPlay
+              playsInline
+              muted
             />
-          )
-        }
-        className='switch'
-      />
-      <div className="io-wrapper">
-        <div>
-          <video
-            ref={videoElm}
-            autoPlay
-            playsInline
-            muted
-          />
-          <span onClick={setVideoStream}>{ enableCamera || 'Please enable camera access.' }</span>
+            {enableCamera || <span onClick={setVideoStream}>Please enable camera access.</span>}
+          </div>
+          <div>
+            <canvas ref={canvasElm} />
+          </div>
         </div>
-        <div>
-          <canvas ref={canvasElm} />
+          
         </div>
+      <h2>Settings</h2>
+      <div className="setting-wrapper">
+        <SettingForm />
       </div>
     </StyledPopupContainer>
   );

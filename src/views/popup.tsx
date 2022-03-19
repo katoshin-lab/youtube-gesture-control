@@ -2,11 +2,14 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { FormControlLabel, Switch, Button } from '@material-ui/core';
 import styled from 'styled-components';
-import type Storage from '../types/storage';
+import type SettingStorage from '../types/settingStorage';
 
 const StyledPopupContainer = styled.div`
   padding: 1rem;
-  width: 200px;
+  width: 400px;
+  .switch-wrapper, .button-wrapper {
+    margin: 1rem 0;
+  }
 `;
 
 const Popup = () => {
@@ -16,14 +19,14 @@ const Popup = () => {
 
   useEffect(() => {
     chrome.storage.sync.get(
-      ['pageWatcherEnable'],
-      (result: Partial<Storage>) => setEnabled(!!result.pageWatcherEnable),
+      ['captureGestureEnable'],
+      (result: Partial<SettingStorage>) => setEnabled(!!result.captureGestureEnable),
     );
   }, []);
 
   const handleEnabled = () => {
     setEnabled(!enabled);
-    chrome.storage.sync.set({ pageWatcherEnable: !enabled });
+    chrome.storage.sync.set({ captureGestureEnable: !enabled });
   };
 
   const openSettingTab = () => {
@@ -33,20 +36,24 @@ const Popup = () => {
 
   return (
     <StyledPopupContainer>
-      <h1>Hello!!!</h1>
-      <FormControlLabel
-        label={enabled ? '監視中' : '休止中'}
-        control={
-          (
-            <Switch
-              checked={enabled}
-              onChange={handleEnabled}
-            />
-          )
-        }
-      />
+      <h1>Youtube Gesture Contol 👋</h1>
+      <div className='switch-wrapper'>
+        <FormControlLabel
+          label={enabled ? 'ENABLE (Camera ON)' : 'DISABLE (Camera OFF)'}
+          control={
+            (
+              <Switch
+                checked={enabled}
+                onChange={handleEnabled}
+              />
+            )
+          }
+        />
+      </div>
       {/* <Button variant='contained' onClick={handleClickButton}>アクション</Button> */}
-      <Button variant='outlined' onClick={openSettingTab}>詳細設定</Button>
+      <div className="button-wrapper">
+        <Button variant='outlined' onClick={openSettingTab} color='inherit'>詳細設定</Button>
+      </div>
     </StyledPopupContainer>
   );
 };
