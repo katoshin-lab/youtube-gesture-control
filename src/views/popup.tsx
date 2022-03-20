@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { FormControlLabel, Switch, Button } from '@material-ui/core';
 import styled from 'styled-components';
-import Base from '../app';
+import CaptureWindowManager from '../main/captureWindowManager';
 import type SettingStorage from '../types/settingStorage';
 
 const StyledPopupContainer = styled.div`
@@ -23,12 +23,13 @@ const Popup = () => {
       ['openCaptureWindow'],
       (result: Partial<SettingStorage>) => setEnabled(!!result.openCaptureWindow),
     );
-    console.log('open capture window? : ', Base.openCaptureWindow);
   }, []);
 
   const handleEnabled = () => {
-    setEnabled(!enabled);
-    chrome.storage.sync.set({ openCaptureWindow: !enabled });
+    const updated = !enabled;
+    setEnabled(updated);
+    chrome.storage.sync.set({ openCaptureWindow: updated });
+    if (updated) chrome.runtime.sendMessage(CaptureWindowManager.actionKey);
   };
 
   const openSettingTab = () => {
