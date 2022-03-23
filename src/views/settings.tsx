@@ -93,28 +93,9 @@ const Settings = () => {
     setVideoStream();
   }, []);
 
-  // const handleEnabled = () => {
-  //   setEnabled(!enabled);
-  //   chrome.storage.sync.set({ openCaptureWindow: !enabled });
-  // };
-
   return (
     <StyledPopupContainer enableCamera={enableCamera}>
       <h1>Welcome to Youtube Gesture Contol 👋</h1>
-      {/* <div className="switch-wrapper">
-        <p className='switch-title'>Enable Gestrue Control?</p>
-        <FormControlLabel
-          label={enabled ? 'ENABLE (Camera ON)' : 'DISABLE (Camera OFF)'}
-          control={
-            (
-              <Switch
-                checked={enabled}
-                onChange={handleEnabled}
-              />
-            )
-          }
-        />
-      </div> */}
       <h2>Capture</h2>
         <div className="io-wrapper">
         <p style={{ display: 'block' }}>{enabled ? 'Capturing your hands! You are able to control youtube video with hand gesture!' : ''}</p>

@@ -35,7 +35,10 @@ const SettingForm = () => {
           }
         />
         <p className="explanation">
-          { enableStartupOpen ? 'Open this window when the browser starts up or toggle this extension on.' : 'This window will not open unless' }
+          {enableStartupOpen
+            ? 'Open this window when the browser starts up or toggle this extension on.'
+            : 'This window will not open unless you toggle the switch on the popup window.'
+          }
         </p>
       </div>
     </>

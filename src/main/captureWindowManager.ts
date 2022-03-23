@@ -13,6 +13,17 @@ export default class CaptureWindowManager {
     this.setRemoveCaptureWindowEvent();
   }
 
+  private openCaptureWindow(): void {
+    this.setOpenStorageStatus(true);
+    if (!this.tab) {
+      const url = chrome.runtime.getURL('settings.html');
+      chrome.tabs.create(
+        { url },
+        (tab: chrome.tabs.Tab) => { this.tab = tab; }
+      );
+    }
+  }
+
   private openWindowBySettings(): void {
     chrome.storage.sync.get(
       ['startupOpen'],
@@ -24,17 +35,6 @@ export default class CaptureWindowManager {
         }
       },
     );
-  }
-
-  private openCaptureWindow(): void {
-    this.setOpenStorageStatus(true);
-    if (!this.tab) {
-      const url = chrome.runtime.getURL('settings.html');
-      chrome.tabs.create(
-        { url },
-        (tab: chrome.tabs.Tab) => { this.tab = tab; }
-      );
-    }
   }
 
   private closeCaptureWindow(): void {
