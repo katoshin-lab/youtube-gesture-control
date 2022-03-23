@@ -29,7 +29,11 @@ const Popup = () => {
     const updated = !enabled;
     setEnabled(updated);
     chrome.storage.sync.set({ openCaptureWindow: updated });
-    if (updated) chrome.runtime.sendMessage(CaptureWindowManager.actionKey);
+    if (updated) {
+      chrome.runtime.sendMessage(CaptureWindowManager.openCaptureWindowKey);
+    } else {
+      chrome.runtime.sendMessage(CaptureWindowManager.closeCaptureWindowKey);
+    }
   };
 
   const openSettingTab = () => {

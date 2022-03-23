@@ -1,45 +1,73 @@
 export default class CaptureWindowManager {
   public static instance: CaptureWindowManager;
 
-  public static readonly actionKey = 'open';
+  public static readonly openCaptureWindowKey = 'openCaptureWindow';
 
-  public open: boolean = false;
+  public static readonly closeCaptureWindowKey = 'closeCaptureWinodw';
+
+  public tab: chrome.tabs.Tab | null = null;
 
   constructor() {
     this.openWindowBySettings();
     this.setRuntimeCallbackAction();
+    this.setRemoveCaptureWindowEvent();
   }
 
-  private openWindowBySettings() {
+  private openWindowBySettings(): void {
     chrome.storage.sync.get(
       ['startupOpen'],
       (result: Partial<Storage>) => {
         if (result.startupOpen) {
           this.openCaptureWindow();
-          chrome.storage.sync.set({ openCaptureWindow: true });
         } else {
-          chrome.storage.sync.set({ openCaptureWindow: false });
+          this.setOpenStorageStatus(false);
         }
       },
     );
   }
 
-  private openCaptureWindow() {
-    if (!this.open) {
+  private openCaptureWindow(): void {
+    this.setOpenStorageStatus(true);
+    if (!this.tab) {
       const url = chrome.runtime.getURL('settings.html');
-      chrome.tabs.create({ url });
-      this.open = true;
+      chrome.tabs.create(
+        { url },
+        (tab: chrome.tabs.Tab) => { this.tab = tab; }
+      );
     }
   }
 
-  private setRuntimeCallbackAction() {
-    chrome.runtime.onMessage.addListener((message: runtimeMessages) => {
-      if (message === CaptureWindowManager.actionKey) {
-        console.log(CaptureWindowManager.actionKey)
+  private closeCaptureWindow(): void {
+    this.setOpenStorageStatus(false);
+    if (this.tab && this.tab.id) {
+      chrome.tabs.remove(this.tab.id);
+      this.tab = null;
+    }
+  }
+
+  private setRuntimeCallbackAction(): void {
+    chrome.runtime.onMessage.addListener((message: runtimeMessages, _, sendResponse) => {
+      if (message === CaptureWindowManager.openCaptureWindowKey) {
         this.openCaptureWindow();
+      } else if (message === CaptureWindowManager.closeCaptureWindowKey) {
+        this.closeCaptureWindow();
       }
+      sendResponse();
     });
+  }
+
+  private setRemoveCaptureWindowEvent(): void {
+    chrome.tabs.onRemoved.addListener((tabId: number) => {
+      if (tabId === this.tab?.id) {
+        this.setOpenStorageStatus(false);
+        this.tab = null;
+      }
+    })
+  }
+
+  private setOpenStorageStatus(bool: boolean): void {
+    chrome.storage.sync.set({ openCaptureWindow: bool });
   }
 }
 
-type runtimeMessages = typeof CaptureWindowManager.actionKey;
+type runtimeMessages = typeof CaptureWindowManager.openCaptureWindowKey | typeof CaptureWindowManager.closeCaptureWindowKey;
