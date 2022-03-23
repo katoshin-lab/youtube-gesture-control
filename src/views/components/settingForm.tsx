@@ -12,20 +12,22 @@ const SettingForm = () => {
       'startupOpen',
       (result: Partial<SettingStorage>) => setEnableStartupOpen(!!result.startupOpen),
     );
-  }, [])
+  }, []);
 
-  const handleSwitch = <T,>(key: string, val: T, setState: React.Dispatch<React.SetStateAction<T>>) => {
+  const handleSwitch = <T, >(
+    key: string,
+    val: T, setState: React.Dispatch<React.SetStateAction<T>>,
+  ) => {
     chrome.storage.sync.set({ [key]: val });
     setState(val);
-  }
+  };
 
   return (
-    <>
-      <div className="switch-wrapper">
-        <h3>Auto Start Up</h3>
-        <FormControlLabel
-          label={enableStartupOpen ? 'ENABLE' : 'DISABLE'}
-          control={
+    <div className="switch-wrapper">
+      <h3>Auto Start Up</h3>
+      <FormControlLabel
+        label={enableStartupOpen ? 'ENABLE' : 'DISABLE'}
+        control={
             (
               <Switch
                 checked={enableStartupOpen}
@@ -33,15 +35,13 @@ const SettingForm = () => {
               />
             )
           }
-        />
-        <p className="explanation">
-          {enableStartupOpen
-            ? 'Open this window when the browser starts up or toggle this extension on.'
-            : 'This window will not open unless you toggle the switch on the popup window.'
-          }
-        </p>
-      </div>
-    </>
+      />
+      <p className="explanation">
+        {enableStartupOpen
+          ? 'Open this window when the browser starts up or toggle this extension on.'
+          : 'This window will not open unless you toggle the switch on the popup window.'}
+      </p>
+    </div>
   );
 };
 

@@ -1,4 +1,5 @@
 export default class CaptureWindowManager {
+  // eslint-disable-next-line no-use-before-define
   public static instance: CaptureWindowManager;
 
   public static readonly openCaptureWindowKey = 'openCaptureWindow';
@@ -19,7 +20,7 @@ export default class CaptureWindowManager {
       const url = chrome.runtime.getURL('settings.html');
       chrome.tabs.create(
         { url },
-        (tab: chrome.tabs.Tab) => { this.tab = tab; }
+        (tab: chrome.tabs.Tab) => { this.tab = tab; },
       );
     }
   }
@@ -46,6 +47,7 @@ export default class CaptureWindowManager {
   }
 
   private setRuntimeCallbackAction(): void {
+    // eslint-disable-next-line no-use-before-define
     chrome.runtime.onMessage.addListener((message: runtimeMessages, _, sendResponse) => {
       if (message === CaptureWindowManager.openCaptureWindowKey) {
         this.openCaptureWindow();
@@ -62,7 +64,7 @@ export default class CaptureWindowManager {
         this.setOpenStorageStatus(false);
         this.tab = null;
       }
-    })
+    });
   }
 
   private setOpenStorageStatus(bool: boolean): void {
@@ -70,4 +72,5 @@ export default class CaptureWindowManager {
   }
 }
 
-type runtimeMessages = typeof CaptureWindowManager.openCaptureWindowKey | typeof CaptureWindowManager.closeCaptureWindowKey;
+type runtimeMessages = typeof CaptureWindowManager.openCaptureWindowKey
+                       | typeof CaptureWindowManager.closeCaptureWindowKey;

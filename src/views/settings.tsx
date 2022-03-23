@@ -97,7 +97,7 @@ const Settings = () => {
     <StyledPopupContainer enableCamera={enableCamera}>
       <h1>Welcome to Youtube Gesture Contol 👋</h1>
       <h2>Capture</h2>
-        <div className="io-wrapper">
+      <div className="io-wrapper">
         <p style={{ display: 'block' }}>{enabled ? 'Capturing your hands! You are able to control youtube video with hand gesture!' : ''}</p>
         <div className="capture-display">
           <div>
@@ -113,8 +113,8 @@ const Settings = () => {
             <canvas ref={canvasElm} />
           </div>
         </div>
-          
-        </div>
+
+      </div>
       <h2>Settings</h2>
       <div className="setting-wrapper">
         <SettingForm />

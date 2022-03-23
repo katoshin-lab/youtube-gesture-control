@@ -1,7 +1,6 @@
 import TabPageHander from './tabPageHandler';
 
 export default class PageWatcher {
-
   protected static readonly targetUrl = 'https://www.youtube.com/watch';
 
   protected static readonly captureTabKey = 'CAPTURE_TAB_KEY';
