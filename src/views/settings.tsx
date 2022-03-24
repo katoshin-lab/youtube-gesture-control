@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import SettingForm from './components/settingForm';
+import HandPoseDetector from '../main/handPauseDetector';
 import type SettingStorage from '../types/settingStorage';
 
 type StyledProps = { enableCamera: boolean };
@@ -77,8 +78,13 @@ const Settings = () => {
     if (navigator.mediaDevices) {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-        videoElm.current!.srcObject = stream;
-        setEnableCamera(!!stream);
+        if (stream) {
+          videoElm.current!.srcObject = stream;
+          new HandPoseDetector(stream);
+          setEnableCamera(true);
+        } else {
+          setEnableCamera(false);
+        }
       } catch {
         setEnableCamera(false);
       }
