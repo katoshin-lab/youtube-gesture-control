@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import SettingForm from './components/settingForm';
 import HandPoseDetector from '../main/handPauseDetector';
+import * as tf from '@tensorflow/tfjs'
 import type SettingStorage from '../types/settingStorage';
 
 type StyledProps = { enableCamera: boolean };
@@ -80,8 +81,9 @@ const Settings = () => {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
         if (stream) {
           videoElm.current!.srcObject = stream;
-          new HandPoseDetector(stream);
           setEnableCamera(true);
+          await tf.ready();
+          new HandPoseDetector(stream);
         } else {
           setEnableCamera(false);
         }
