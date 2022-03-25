@@ -2,8 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import SettingForm from './components/settingForm';
-import HandPoseDetector from '../main/handPauseDetector';
-import * as tf from '@tensorflow/tfjs'
+import HandPoseDetector from '../main/handPoseDetector';
 import type SettingStorage from '../types/settingStorage';
 
 type StyledProps = { enableCamera: boolean };
@@ -66,6 +65,8 @@ const StyledPopupContainer = styled.div<StyledProps>`
   }
 `;
 
+// let count = 0;
+
 const Settings = () => {
   const { useState, useEffect, useRef } = React;
 
@@ -78,12 +79,16 @@ const Settings = () => {
   const setVideoStream = async () => {
     if (navigator.mediaDevices) {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-        if (stream) {
-          videoElm.current!.srcObject = stream;
+        const constraints = {
+          audio: true,
+          video: true
+        };
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        if (stream && videoElm.current && canvasElm.current) {
+          const handPoseDetector = new HandPoseDetector(stream);
+          handPoseDetector.setDetectStream();
+          videoElm.current.srcObject = stream;
           setEnableCamera(true);
-          await tf.ready();
-          new HandPoseDetector(stream);
         } else {
           setEnableCamera(false);
         }
