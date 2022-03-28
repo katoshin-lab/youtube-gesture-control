@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import SettingForm from './components/settingForm';
 import HandPoseDetector from '../main/handPoseDetector';
+import config from '../config';
 import type SettingStorage from '../types/settingStorage';
 
 type StyledProps = { enableCamera: boolean };
@@ -35,15 +36,17 @@ const StyledPopupContainer = styled.div<StyledProps>`
     display: flex;
     >div {
       margin-left: 1.5rem;
-      width: 160px;
-      height: 90px;
+      width: ${config.capture.width}px;
+      height: ${config.capture.height}px;
       border-radius: 4px;
       border: 1px solid #cccccc;
       video, canvas {
+        transform: scale(-1, 1);
+      }
+      video {
         display: ${({ enableCamera }) => (enableCamera ? 'block' : 'none')};
         width: 100%;
         height: 100%;
-        transform: scale(-1, 1);
       }
       span {
         display: flex;
@@ -85,7 +88,8 @@ const Settings = () => {
         };
         const stream = await navigator.mediaDevices.getUserMedia(constraints);
         if (stream && videoElm.current && canvasElm.current) {
-          const handPoseDetector = new HandPoseDetector(stream);
+          const ctx = canvasElm.current.getContext('2d');
+          const handPoseDetector = new HandPoseDetector(stream, ctx);
           handPoseDetector.setDetectStream();
           videoElm.current.srcObject = stream;
           setEnableCamera(true);
@@ -123,7 +127,11 @@ const Settings = () => {
             {enableCamera || <span onClick={setVideoStream}>Please enable camera access.</span>}
           </div>
           <div>
-            <canvas ref={canvasElm} />
+            <canvas
+              ref={canvasElm}
+              width={config.capture.width}
+              height={config.capture.height}
+            />
           </div>
         </div>
 

@@ -1,11 +1,12 @@
 import * as tf from '@tensorflow/tfjs';
 import * as handPoseDetection from '@tensorflow-models/hand-pose-detection';
+import RenderPrediction from './renderPrediction';
 
 export default class HandPauseDetector {
 
   public count = 0;
 
-  constructor(public stream: MediaStream) {}
+  constructor(public stream: MediaStream, public ctx: CanvasRenderingContext2D | null) {}
 
   public async setDetectStream() {
     await tf.ready();
@@ -31,11 +32,12 @@ export default class HandPauseDetector {
       },
       write: async (videoStream: VideoFrame) => {
         const imageBitmap = await createImageBitmap(videoStream);
-        const hand = await detector.estimateHands(imageBitmap);
+        const hand = await detector.estimateHands(imageBitmap, { flipHorizontal: true });
         this.count++
         console.log('stream count: ', this.count)
         console.log('streaming: ', hand);
         if (hand.length === 0)chrome.runtime.sendMessage('no hand');
+        if (this.ctx) new RenderPrediction(imageBitmap, this.ctx);
         imageBitmap.close();
         videoStream.close();
       },
