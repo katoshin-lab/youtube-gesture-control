@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import SettingForm from './components/settingForm';
 import HandPoseDetector from '../main/handPoseDetector';
+import RenderPrediction from '../main/handPoseDetector/renderPrediction';
 import config from '../config';
 import type SettingStorage from '../types/settingStorage';
 
@@ -56,6 +57,9 @@ const StyledPopupContainer = styled.div<StyledProps>`
         cursor: pointer;
         text-decoration: underline;
       }
+      .fps {
+        text-align: end;
+      }
     }
     >div:first-of-type {
       margin-left: 0;
@@ -78,6 +82,7 @@ const Settings = () => {
 
   const [enabled, setEnabled] = useState<boolean>(false);
   const [enableCamera, setEnableCamera] = useState<boolean>(false);
+  const [fps, setFps] = useState(0);
 
   const setVideoStream = async () => {
     if (navigator.mediaDevices) {
@@ -102,12 +107,20 @@ const Settings = () => {
     }
   };
 
+  const setFpsCounter = () => {
+    setInterval(() => {
+      setFps(RenderPrediction.fpsCounter);
+      RenderPrediction.fpsCounter = 0;
+    }, 1000);
+  }
+
   useEffect(() => {
     chrome.storage.sync.get(
       'openCaptureWindow',
       (result: Partial<SettingStorage>) => setEnabled(!!result.openCaptureWindow),
     );
     setVideoStream();
+    setFpsCounter();
   }, []);
 
   return (
@@ -132,6 +145,7 @@ const Settings = () => {
               width={config.capture.width}
               height={config.capture.height}
             />
+            <div className='fps'>FPS: {fps}</div>
           </div>
         </div>
 
