@@ -54,7 +54,7 @@ export default class CaptureWindowManager {
       } else if (message === CaptureWindowManager.closeCaptureWindowKey) {
         this.closeCaptureWindow();
       } else {
-        console.log('receive message: ', message)
+        console.log('receive message: ', message);
       }
       sendResponse();
     });

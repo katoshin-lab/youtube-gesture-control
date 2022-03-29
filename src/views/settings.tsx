@@ -89,7 +89,7 @@ const Settings = () => {
       try {
         const constraints = {
           audio: true,
-          video: true
+          video: true,
         };
         const stream = await navigator.mediaDevices.getUserMedia(constraints);
         if (stream && videoElm.current && canvasElm.current) {
@@ -112,7 +112,7 @@ const Settings = () => {
       setFps(RenderPrediction.fpsCounter);
       RenderPrediction.fpsCounter = 0;
     }, 1000);
-  }
+  };
 
   useEffect(() => {
     chrome.storage.sync.get(
@@ -145,7 +145,10 @@ const Settings = () => {
               width={config.capture.width}
               height={config.capture.height}
             />
-            <div className='fps'>FPS: {fps}</div>
+            <div className='fps'>
+              FPS:
+              {fps}
+            </div>
           </div>
         </div>
 
