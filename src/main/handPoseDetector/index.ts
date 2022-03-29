@@ -20,9 +20,9 @@ export default class HandPauseDetector {
     const detector = await handPoseDetection.createDetector(model, detectorConfig);
     const track = this.stream.getVideoTracks()[0] as MediaStreamVideoTrack;
     track.applyConstraints({
-      width: { ideal: 1280 },
-      height: { ideal: 720 },
-      frameRate: { ideal: 30 }
+      width: { ideal: 720 },
+      height: { ideal: 480 },
+      frameRate: { ideal: 60 }
     })
     const processor = new MediaStreamTrackProcessor({ track });
 

@@ -1,5 +1,5 @@
 const path = require('path')
-const CopyWebpackPlugin = require("copy-webpack-plugin")
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 const common = {
   mode: process.env.NODE_ENV === 'development' ? "development" : "production",

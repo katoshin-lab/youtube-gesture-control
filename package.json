@@ -8,7 +8,7 @@
   "scripts": {
     "dev-build": "run-p dev:*",
     "dev:pre": "rimraf dist",
-    "dev:webpack": "cross-env NODENV=\"development\" webpack --progress --watch",
+    "dev:webpack": "cross-env NODENV=\"development\" webpack --progress --watch --mode production",
     "build": "cross-env NODENV=\"production\" webpack --progress",
     "lint:eslint": "eslint . --ext ts,tsx",
     "fix:eslint": "eslint . --ext ts,tsx --fix"
@@ -16,13 +16,11 @@
   "dependencies": {
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
-    "@mediapipe/hands": "^0.4.1646424915",
     "@tensorflow-models/hand-pose-detection": "^2.0.0",
-    "@tensorflow/tfjs": "^3.14.0",
     "@tensorflow/tfjs-backend-webgl": "^3.15.0",
     "@tensorflow/tfjs-converter": "^3.15.0",
     "@tensorflow/tfjs-core": "^3.15.0",
-    "@tensorflow/tfjs-node": "^3.14.0",
+    "@tensorflow/tfjs-node": "^3.15.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "styled-components": "^5.3.3",
