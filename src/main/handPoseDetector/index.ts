@@ -39,9 +39,8 @@ export default class HandPauseDetector {
         this.count += 1;
         console.log('stream count: ', this.count);
         console.log('streaming: ', hand);
-        if (hand.length === 0)chrome.runtime.sendMessage('no hand');
-        if (this.ctx) {
-          const prediction = new RenderPrediction(imageBitmap, this.ctx);
+        if (this.ctx && hand.length) {
+          const prediction = new RenderPrediction(hand[0].keypoints, imageBitmap, this.ctx);
           prediction.drow();
         }
         imageBitmap.close();
