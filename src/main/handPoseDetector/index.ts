@@ -2,15 +2,24 @@ import * as tf from '@tensorflow/tfjs';
 import * as handPoseDetection from '@tensorflow-models/hand-pose-detection';
 import RenderPrediction from './renderPrediction';
 
+export const renderCanvasFlagKey = {
+  enable: 'enableRenderCanvas',
+  disable: 'disableRenderCanvas'
+} as const;
+
 export default class HandPauseDetector {
   public static initialized = false;
 
   public count = 0;
 
+  // リソース節約のため表示してない時はcanvasを更新しない
+  protected renderCanvas = true;
+
   protected renderer!: RenderPrediction;
 
   constructor(public stream: MediaStream, public ctx: CanvasRenderingContext2D | null) {
     HandPauseDetector.initialized = true;
+    this.setTabActivateEventListener();
   }
 
   public async setDetectStream() {
@@ -36,8 +45,8 @@ export default class HandPauseDetector {
       start() {
         console.log('writable stream is started');
       },
-      write: async (videoStream: VideoFrame) => {
-        const imageBitmap = await createImageBitmap(videoStream);
+      write: async (videoFrame: VideoFrame) => {
+        const imageBitmap = await createImageBitmap(videoFrame);
         const hand = await detector.estimateHands(imageBitmap, { flipHorizontal: true });
         this.count += 1;
         console.log('stream count: ', this.count);
@@ -45,9 +54,11 @@ export default class HandPauseDetector {
         if (this.ctx && !this.renderer) {
           this.renderer = new RenderPrediction(this.ctx);
         }
-        this.renderer?.draw(hand[0]?.keypoints, imageBitmap);
+        if (this.renderCanvas && this.renderer) {
+          this.renderer.draw(hand[0]?.keypoints, imageBitmap);
+        }
         imageBitmap.close();
-        videoStream.close();
+        videoFrame.close();
       },
       close() {
         console.log('close writable stream');
@@ -58,5 +69,16 @@ export default class HandPauseDetector {
     });
 
     processor.readable.pipeTo(writableStream);
+  }
+
+  protected setTabActivateEventListener() {
+    chrome.runtime.onMessage.addListener((message, _, sendResponse) => {
+      if (message === renderCanvasFlagKey.enable) {
+        this.renderCanvas = true;
+      } else if (message === renderCanvasFlagKey.disable) {
+        this.renderCanvas = false;
+      }
+      sendResponse();
+    })
   }
 }

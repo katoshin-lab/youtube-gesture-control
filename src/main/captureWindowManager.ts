@@ -1,3 +1,5 @@
+import { renderCanvasFlagKey } from "./handPoseDetector";
+
 export default class CaptureWindowManager {
   // eslint-disable-next-line no-use-before-define
   public static instance: CaptureWindowManager;
@@ -11,6 +13,7 @@ export default class CaptureWindowManager {
   constructor() {
     this.openWindowBySettings();
     this.setRuntimeCallbackAction();
+    this.setSendMessageOnActiveTabChanged();
     this.setRemoveCaptureWindowEvent();
   }
 
@@ -58,6 +61,16 @@ export default class CaptureWindowManager {
       }
       sendResponse();
     });
+  }
+
+  private setSendMessageOnActiveTabChanged = () => {
+    chrome.tabs.onActivated.addListener(({ tabId }: chrome.tabs.TabActiveInfo) => {
+      if (this.tab && this.tab.id === tabId) {
+        chrome.tabs.sendMessage(this.tab.id, renderCanvasFlagKey.enable);
+      } else if (this.tab?.id) {
+        chrome.tabs.sendMessage(this.tab.id, renderCanvasFlagKey.disable);
+      }
+    })
   }
 
   private setRemoveCaptureWindowEvent(): void {
