@@ -7,6 +7,8 @@ export default class HandPauseDetector {
 
   public count = 0;
 
+  protected renderer!: RenderPrediction;
+
   constructor(public stream: MediaStream, public ctx: CanvasRenderingContext2D | null) {
     HandPauseDetector.initialized = true;
   }
@@ -19,6 +21,7 @@ export default class HandPauseDetector {
     const detectorConfig = {
       runtime: 'tfjs',
       modelType: 'full',
+      maxHands: 1
     } as handPoseDetection.MediaPipeHandsTfjsModelConfig;
     const detector = await handPoseDetection.createDetector(model, detectorConfig);
     const track = this.stream.getVideoTracks()[0] as MediaStreamVideoTrack;
@@ -39,10 +42,10 @@ export default class HandPauseDetector {
         this.count += 1;
         console.log('stream count: ', this.count);
         console.log('streaming: ', hand);
-        if (this.ctx && hand.length) {
-          const prediction = new RenderPrediction(hand[0].keypoints, imageBitmap, this.ctx);
-          prediction.drow();
+        if (this.ctx && !this.renderer) {
+          this.renderer = new RenderPrediction(this.ctx);
         }
+        this.renderer?.draw(hand[0]?.keypoints, imageBitmap);
         imageBitmap.close();
         videoStream.close();
       },

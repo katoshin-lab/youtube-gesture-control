@@ -36,18 +36,24 @@ const StyledPopupContainer = styled.div<StyledProps>`
   .capture-display {
     display: flex;
     >div {
+      position: relative;
       margin-left: 1.5rem;
-      width: ${config.capture.width}px;
-      height: ${config.capture.height}px;
       border-radius: 4px;
       border: 1px solid #cccccc;
+      height: fit-content;
       video, canvas {
         transform: scale(-1, 1);
       }
       video {
         display: ${({ enableCamera }) => (enableCamera ? 'block' : 'none')};
-        width: 100%;
-        height: 100%;
+        visibility: hidden;
+        width: ${config.capture.width}px;
+        height: ${config.capture.height}px;
+      }
+      canvas {
+        min-width: ${config.capture.width * 2}px;
+        min-height: ${config.capture.height * 2}px;
+        opacity: .1;
       }
       span {
         display: flex;
@@ -58,7 +64,9 @@ const StyledPopupContainer = styled.div<StyledProps>`
         text-decoration: underline;
       }
       .fps {
-        text-align: end;
+        position: absolute;
+        right: 0;
+        bottom: -20px;
       }
     }
     >div:first-of-type {
@@ -142,8 +150,8 @@ const Settings = () => {
           <div>
             <canvas
               ref={canvasElm}
-              width={config.capture.width}
-              height={config.capture.height}
+              width={config.capture.width * 2}
+              height={config.capture.height * 2}
             />
             <div className='fps'>
               FPS:
@@ -151,7 +159,6 @@ const Settings = () => {
             </div>
           </div>
         </div>
-
       </div>
       <h2>Settings</h2>
       <div className="setting-wrapper">
