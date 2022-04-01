@@ -38,14 +38,14 @@ export default class RenderPrediction {
       this.preCtx.clearRect(0, 0, this.prerender.width, this.prerender.height);
       this.preCtx.drawImage(imageBitmap, 0, 0, this.prerender.width, this.prerender.height);
       if (keypoints) {
-        this.prerenderStroke(keypoints);
+        this.prerenderPath(keypoints);
       }
       this.render();
     }
     RenderPrediction.fpsCounter += 1;
   }
 
-  protected prerenderStroke(keypoints: Keypoint[]): void {
+  protected prerenderPath(keypoints: Keypoint[]): void {
     if (this.preCtx) {
       this.preCtx.beginPath();
       for (let i = 0; i < connections.length; i++) {
