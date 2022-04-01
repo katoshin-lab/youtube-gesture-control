@@ -35,16 +35,22 @@ export default class RenderPrediction {
 
   public draw(keypoints: Keypoint[] | undefined, imageBitmap: ImageBitmap): void {
     if (this.preCtx) {
+      // clear the pre-render canvas object
       this.preCtx.clearRect(0, 0, this.prerender.width, this.prerender.height);
+
+      // draw the camera capture on the pre-render canvas
       this.preCtx.drawImage(imageBitmap, 0, 0, this.prerender.width, this.prerender.height);
+
       if (keypoints) {
         this.prerenderPath(keypoints);
       }
+
       this.render();
     }
     RenderPrediction.fpsCounter += 1;
   }
 
+  // draw path on the pre-render canvas onto the hands
   protected prerenderPath(keypoints: Keypoint[]): void {
     if (this.preCtx) {
       this.preCtx.beginPath();
@@ -68,6 +74,7 @@ export default class RenderPrediction {
     }
   }
 
+  // draw the pre-rendered image data on the visible canvas.
   protected render(): void {
     if (this.preCtx) {
       const imageData = this.preCtx.getImageData(0, 0, this.prerender.width, this.prerender.height);
