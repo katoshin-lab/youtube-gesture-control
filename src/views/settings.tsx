@@ -101,7 +101,7 @@ const Settings = () => {
         };
         const stream = await navigator.mediaDevices.getUserMedia(constraints);
         if (stream && videoElm.current && canvasElm.current) {
-          const ctx = canvasElm.current.getContext('2d');
+          const ctx = canvasElm.current.getContext('2d', { alpha: false });
           const handPoseDetector = new HandPoseDetector(stream, ctx);
           handPoseDetector.setDetectStream();
           videoElm.current.srcObject = stream;

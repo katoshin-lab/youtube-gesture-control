@@ -30,7 +30,7 @@ export default class RenderPrediction {
     this.prerender = document.createElement('canvas');
     this.prerender.width = config.capture.width * 2;
     this.prerender.height = config.capture.height * 2;
-    this.preCtx = this.prerender.getContext('2d');
+    this.preCtx = this.prerender.getContext('2d', { alpha: false });
   }
 
   public draw(keypoints: Keypoint[] | undefined, imageBitmap: ImageBitmap): void {
