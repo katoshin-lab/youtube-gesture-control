@@ -54,6 +54,8 @@ export default class RenderPrediction {
   protected prerenderPath(keypoints: Keypoint[]): void {
     if (this.preCtx) {
       this.preCtx.beginPath();
+      this.preCtx.strokeStyle = "green";
+      this.preCtx.lineWidth = 2;
       for (let i = 0; i < connections.length; i++) {
         const [startIndex, endIndex] = connections[i];
         const start = keypoints[startIndex];
@@ -67,10 +69,20 @@ export default class RenderPrediction {
           Math.round(end.y / 2.5)
         );
         // console.log('from: ', Math.round((config.capture.width * 5 - start.x) / 2.5), Math.round(start.y / 2.5), 'to: ', Math.round((config.capture.width * 5 - end.x) / 2.5), Math.round(end.y / 2.5))
-        this.preCtx.strokeStyle = "green";
-        this.preCtx.lineWidth = 3;
       }
       this.preCtx.stroke();
+
+      // draw dots on keypoints
+      this.preCtx.beginPath();
+      this.preCtx.fillStyle = "red";
+      this.preCtx.lineWidth = 2;
+      for (let { x, y } of keypoints) {
+        x = Math.round((config.capture.width * 5 - x) / 2.5);
+        y = Math.round(y / 2.5);
+        this.preCtx.arc(x, y, 2, 0, 2 * Math.PI, false);
+        this.preCtx.closePath();
+      }
+      this.preCtx.fill();
     }
   }
 
