@@ -18,29 +18,13 @@ export default class Base {
 
   public tabPageHandler!: TabPageHander;
 
-  // public enableCaptureGesture!: boolean;
-
   public captureWindow!: CaptureWindowManager;
 
   constructor() {
     this.watcher = new PageWatcher();
     this.captureWindow = new CaptureWindowManager();
     this.setClickLogoListener();
-    // this.readSettings();
-    // chrome.storage.onChanged.addListener(this.readSettings.bind(this));
   }
-
-  // private readSettings() {
-  //   chrome.storage.sync.get(
-  //     ['captureGestureEnable', 'startupOpen'],
-  //     (_: Partial<Storage>) => {
-  //       this.enableCaptureGesture = !!result.captureGestureEnable;
-  //       console.log('enable: ', this.enableCaptureGesture);
-  //       if (result.startupOpen && !this.captureWindow) {
-  //       }
-  //     },
-  //   );
-  // }
 
   private setClickLogoListener() {
     chrome.action.onClicked.addListener(async () => {

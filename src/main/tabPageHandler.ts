@@ -1,8 +1,6 @@
 // import type { videoElement } from '../types/tabPageHandler';
 
 export default class TabPageHander {
-  protected static readonly youtubeVideoElementClass = '.video-stream .html5-main-video';
-
   public tab: chrome.tabs.Tab;
 
   constructor(tab: chrome.tabs.Tab) {
@@ -31,6 +29,7 @@ export default class TabPageHander {
     );
   }
 
+  // seconds could be negative.
   public seekVideo(seconds: number): void {
     this.executeScript(
       () => {
